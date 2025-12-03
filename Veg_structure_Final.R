@@ -1,3 +1,33 @@
+# Veg_structure_Final.R
+# -------------------------------------------------------------
+# Purpose:
+#   - Evaluate relationships between LiDAR-derived vegetation structure metrics and residual dry matter (RDM) using regression models.
+#   - Compare model performance between vegetation structures ('Standing', 'Mixed', 'Laying') using leave-one-out cross-validation (LOOCV).
+#   - Visualize prediction accuracy and feature importance for linear regression and random forest models.
+# 
+# Main Steps:
+#   1. Load and clean field data, assign each record to structural vegetation class.
+#   2. For each structure type:
+#        - Train and evaluate LOOCV linear regression and random forest models using selected LiDAR predictors.
+#        - Calculate R^2, MAE, and other metrics for each model.
+#        - Visualize prediction results and feature importances.
+#   3. Special handling: Filter outliers for 'Laying' structure and re-evaluate model accuracy.
+#   4. Output summary tables and plots for interpretation.
+# 
+# Input:
+#   - Dangermond Field Data Excel file with vegetation plot observations.
+# Output:
+#   - Console summary of model metrics by vegetation structure.
+#   - Plots comparing predicted vs actual RDM and variable importance for each structure.
+#   - Additional accuracy plot for 'Laying' structure with outliers removed.
+# 
+# Dependencies:
+#   - readxl, dplyr, randomForest, ggplot2, gridExtra, scales, caret
+
+#Author: Bruce Markman
+# -------------------------------------------------------------
+
+
 library(readxl)
 library(dplyr)
 library(randomForest)
@@ -231,5 +261,6 @@ ggplot(df_laying_filtered, aes(x = Actual)) +
     axis.title = element_text(size = 24, face = "bold"),
     axis.text = element_text(size = 22)
   )
+
 
 
