@@ -1,12 +1,3 @@
-# ---# Remote-Sensing-of-Residual-Dry-Matter: Combined Spectral & LiDAR Modeling Script #---#
-# Libraries Used:
-#   - readxl, dplyr, readr: For loading and cleaning data
-#   - randomForest: For training random forest models and feature importance
-#   - ggplot2, gridExtra, grid: For data visualization and arranging plots
-#   - spdep: For calculating spatial autocorrelation (Moran's I)
-#   - caret: For model performance metrics (e.g., R2, MAE)
-#   - broom: For summarizing regression models
-#
 # Script Workflow:
 #   - Loads field data and prepares predictors from spectral indices and LiDAR-derived metrics
 #   - Defines three modeling scenarios:
@@ -252,6 +243,7 @@ grid.arrange(
 
 cat("\nModel Performance Summary (LOOCV):\n")
 print(results %>% select(Model, R2, MAE, SD_Error, p_value, Predictors, Sample_Size))
+
 
 
 
