@@ -1,3 +1,23 @@
+# =============================================================================
+# Spectral Reflectance Visualization for Residual Dry Matter (RDM) Field Data
+#
+# This script reads field metadata from an Excel spreadsheet and matches each
+# sampled vegetation plot to its corresponding spectral reflectance data file.
+# For each plot with both a spectra file and oven-dried biomass measurement:
+#   - Loads the reflectance data, masks out noisy wavelength regions,
+#   - Plots the reflectance spectrum, colored by oven-dried biomass (RDM, g),
+#   - Highlights key spectral indices (LCAI, NDLI, CAI) for interpretation,
+#   - Customizes the plot with labels, legends, and colorbar.
+#
+# Usage:
+#   - Update 'spectra_dir' and 'excel_file_path' as needed for data locations.
+#   - Run to generate a figure visualizing spectral signatures by biomass.
+#
+# Dependencies: pandas, matplotlib
+
+# Author: Bruce Markman
+# =============================================================================
+
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -65,5 +85,6 @@ plt.yticks(fontsize=18)
 plt.legend(loc='upper left', fontsize=30, title_fontsize=40)
 plt.tight_layout()
 plt.show()
+
 
 
