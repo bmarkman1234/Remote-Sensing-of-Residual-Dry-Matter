@@ -1,4 +1,3 @@
-# === Load Libraries ===
 library(readxl)
 library(dplyr)
 library(randomForest)
@@ -7,12 +6,10 @@ library(gridExtra)
 library(scales)
 library(caret)
 
-# === Load Data ===
 file_path <- "C:/Users/bmark/PycharmProjects/MS_Thesis/data/Dangermond Field Data.xlsx"
 df <- read_excel(file_path)
 df$study_area <- tolower(df$study_area)
 
-# === Define Structure Groups ===
 standing_sites <- c('cmt_ungrazed', 'jalama_horse')
 mixed_sites <- c('jalachichi', 'steves_flat', 'jalama_bull', 'east_tinta')
 laying_sites <- c('cojo_cow', 'jalama_mare')
@@ -26,21 +23,16 @@ df$structure <- case_when(
 
 df <- df %>% filter(structure %in% c("Standing", "Mixed", "Laying"))
 
-# === LiDAR Predictors ===
 lidar_predictors <- c("chm_max", "chm_range", "chm_mean", "chm_std", "chm_median", "chm_pct90")
 
-# Drop rows with NA in predictors or target
 df <- df[complete.cases(df[, c(lidar_predictors, "oven_weight")]), ]
 
-# Setup color palette
 palette <- c("Standing" = "red", "Mixed" = "darkgreen", "Laying" = "blue")
 
-# Initialize containers
 results <- list()
 plot_list <- list()
 importance_list <- list()
 
-# === LOOCV Modeling and Plotting ===
 for (structure in c("Standing", "Mixed", "Laying")) {
   df_struct <- df %>% filter(structure == !!structure)
   
@@ -82,7 +74,6 @@ for (structure in c("Standing", "Mixed", "Laying")) {
   r2_rf <- R2(pred_rf, y)
   mae_rf <- MAE(pred_rf, y)
   
-  # Full-model LR for p-value
   lr_full <- lm(y ~ ., data = as.data.frame(X))
   f_stat <- summary(lr_full)$fstatistic
   p_val_lr <- pf(f_stat[1], f_stat[2], f_stat[3], lower.tail = FALSE)
@@ -100,7 +91,6 @@ for (structure in c("Standing", "Mixed", "Laying")) {
     `Sample Size` = n
   )
   
-  # === Prediction Plot ===
   df_plot <- data.frame(Actual = y, Pred_LR = pred_lr, Pred_RF = pred_rf)
   
   if (structure == "Laying") {
@@ -133,7 +123,6 @@ for (structure in c("Standing", "Mixed", "Laying")) {
   
   plot_list[[structure]] <- p
   
-  # === Variable Importance Plot ===
   rf_full <- randomForest(
     x = X, y = y,
     ntree = 1000,
@@ -171,18 +160,14 @@ for (structure in c("Standing", "Mixed", "Laying")) {
   importance_list[[structure]] <- imp_plot
 }
 
-# === Print Model Performance Table ===
 cat("\nModel Performance by Vegetation Structure (LiDAR Only, LOOCV Predictions Only):\n")
 results_df <- do.call(rbind, results)
 print(results_df)
 
-# === Display Prediction Plots ===
 grid.arrange(plot_list$Standing, plot_list$Mixed, plot_list$Laying, nrow = 1)
 
-# === Display Importance Plots ===
 grid.arrange(importance_list$Standing, importance_list$Mixed, importance_list$Laying, nrow = 1)
 
-# === Laying Vegetation (Outlier Removed) ===
 laying_df <- df %>% filter(structure == "Laying")
 X_laying <- laying_df %>% select(all_of(lidar_predictors)) %>% scale()
 y_laying <- laying_df$oven_weight
@@ -246,4 +231,5 @@ ggplot(df_laying_filtered, aes(x = Actual)) +
     axis.title = element_text(size = 24, face = "bold"),
     axis.text = element_text(size = 22)
   )
+
 
