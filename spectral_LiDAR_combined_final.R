@@ -1,4 +1,3 @@
-# === Load required libraries ===
 library(readxl)
 library(dplyr)
 library(randomForest)
@@ -10,11 +9,9 @@ library(caret)
 library(broom)
 library(readr)
 
-# === Load and prepare data ===
 df <- read_excel("C:/Users/bmark/pycharmProjects/MS_Thesis/data/Dangermond Field Data.xlsx") %>% 
   mutate(study_area = tolower(study_area))
 
-# === Define model configurations ===
 spectral <- c("cai", "lcai", "ndli")
 lidar <- c("chm_max", "chm_range", "chm_mean", "chm_std", "chm_median", "chm_pct90")
 combined <- c(spectral, lidar)
@@ -27,7 +24,6 @@ model_specs <- list(
   list(name = "Spectral + LiDAR", predictors = combined, use_selected = TRUE, label = "C)")
 )
 
-# === Helper Functions ===
 calc_loocv_preds <- function(X, y) {
   n <- nrow(X)
   preds <- data.frame(lr = numeric(n), rf = numeric(n))
@@ -111,7 +107,6 @@ make_rf_importance_plot <- function(rf_model, model_name, label) {
     )
 }
 
-# === Model Loop ===
 all_morans <- list()
 results <- data.frame()
 pred_plots <- list()
@@ -159,7 +154,6 @@ for (i in seq_along(model_specs)) {
   )
 }
 
-# === Format and save regression coefficient table ===
 lr_combined <- bind_rows(lr_tables) %>%
   rename(
     β = estimate,
@@ -177,11 +171,9 @@ lr_combined <- bind_rows(lr_tables) %>%
 
 write_csv(lr_combined, "C:/Users/bmark/OneDrive/Desktop/linear_regression_coefficients_combined.csv")
 
-# === Print Regression Tables ===
 cat("\nLinear Regression Coefficients Tables:\n")
 print(lr_combined)
 
-# === Moran's I Boxplot ===
 moran_df <- bind_rows(all_morans)
 moran_df$Model <- factor(moran_df$Model, levels = c("rf", "lr"), labels = c("Random Forest", "Linear Regression"))
 moran_df$Type <- factor(moran_df$Type, levels = c("Spectral Only", "LiDAR Only", "Spectral + LiDAR"))
@@ -200,7 +192,6 @@ p_moran <- ggplot(moran_df, aes(x = Type, y = Moran_I, fill = Model)) +
     plot.title = element_text(size = 24, face = "bold", hjust = 0.5)
   )
 
-# === Display Scatter Plots ===
 grid.arrange(
   lr_rf_scatter_plots[["Spectral Only"]],
   lr_rf_scatter_plots[["LiDAR Only"]],
@@ -208,10 +199,8 @@ grid.arrange(
   nrow = 1
 )
 
-# === Display Moran's I Plot ===
 print(p_moran)
 
-# === Display RF Importance Plots ===
 grid.arrange(
   imp_plots[["Spectral Only"]],
   imp_plots[["LiDAR Only"]],
@@ -219,7 +208,7 @@ grid.arrange(
   nrow = 1
 )
 
-# === Print Model Performance Summary ===
 cat("\nModel Performance Summary (LOOCV):\n")
 print(results %>% select(Model, R2, MAE, SD_Error, p_value, Predictors, Sample_Size))
+
 
