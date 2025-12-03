@@ -8,3 +8,5 @@ LiDAR Data: https://portal.opentopography.org/dataspace/dataset?opentopoID=OTDS.
 <img width="566" height="377" alt="image" src="https://github.com/user-attachments/assets/d1e3f6bb-8c74-4fe1-858e-ee82004284b8" />
 
 Field Data and Spectra: https://knb.ecoinformatics.org/view/doi%3A10.5063%2FF1M043WF
+
+R was used for statistical analysis and Python was used for data viz
