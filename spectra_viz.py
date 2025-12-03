@@ -16,9 +16,6 @@ oven_weights = field_data_filtered['oven_weight'].values
 norm = Normalize(vmin=min(oven_weights), vmax=max(oven_weights))
 colormap = plt.colormaps["coolwarm"]
 
-# Exclude specific file
-excluded_file = "gr092324_0011.sig"
-
 # Plot all spectra on the same plot
 plt.figure(figsize=(12, 8))
 
@@ -80,3 +77,4 @@ plt.yticks(fontsize=18)
 plt.legend(loc='upper left', fontsize=30, title_fontsize=40)
 plt.tight_layout()
 plt.show()
+
