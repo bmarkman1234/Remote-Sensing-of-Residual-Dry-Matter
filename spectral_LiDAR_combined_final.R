@@ -1,3 +1,45 @@
+# ---# Remote-Sensing-of-Residual-Dry-Matter: Combined Spectral & LiDAR Modeling Script #---#
+# Libraries Used:
+#   - readxl, dplyr, readr: For loading and cleaning data
+#   - randomForest: For training random forest models and feature importance
+#   - ggplot2, gridExtra, grid: For data visualization and arranging plots
+#   - spdep: For calculating spatial autocorrelation (Moran's I)
+#   - caret: For model performance metrics (e.g., R2, MAE)
+#   - broom: For summarizing regression models
+#
+# Script Workflow:
+#   - Loads field data and prepares predictors from spectral indices and LiDAR-derived metrics
+#   - Defines three modeling scenarios:
+#       • Spectral only predictors
+#       • LiDAR only predictors
+#       • Combined spectral+LiDAR predictors
+#   - For each scenario:
+#       • Selects relevant samples and predictor variables
+#       • Scales predictors and splits by study area (selected sites for spectral/combined)
+#       • Performs leave-one-out cross-validation (LOOCV) with:
+#            - Linear regression (lm)
+#            - Random forest (randomForest)
+#       • Calculates and plots observed vs predicted values for both models
+#       • Trains full random forest on all data for variable importance plotting
+#       • Fits full linear model and saves tidy output (regression coefficients, stats)
+#       • Computes and records performance metrics:
+#           - R2
+#           - MAE (Mean Absolute Error)
+#           - SD of errors
+#           - p-values (linear regression significance)
+#       • Calculates Moran’s I on residuals per site to assess spatial autocorrelation
+#   - Combines results into:
+#       • Performance summary table (R2, MAE, SD, p-value, predictors, sample size)
+#       • Table of linear regression coefficients and statistics (exported as CSV)
+#       • Moran’s I boxplot comparison for model types/scenarios
+#       • Feature importance barplots for RF models
+#       • Observed vs predicted scatterplots for each model/scenario
+#   - Final output includes:
+#       • CSV table of linear regression coefficients
+#       • Multiple summary and comparison plots (performance, importance, residual autocorrelation)
+#       • Printed tables of metrics and coefficients for review
+################## AUTHOR: Bruce Markman ###########################
+
 library(readxl)
 library(dplyr)
 library(randomForest)
@@ -210,5 +252,6 @@ grid.arrange(
 
 cat("\nModel Performance Summary (LOOCV):\n")
 print(results %>% select(Model, R2, MAE, SD_Error, p_value, Predictors, Sample_Size))
+
 
 
