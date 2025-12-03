@@ -2,6 +2,8 @@ Script used for my MS Thesis and this manuscript: https://www.mdpi.com/2072-4292
 
 
 <img width="1196" height="416" alt="image" src="https://github.com/user-attachments/assets/233e66de-ca64-4ac4-b4ac-87fd7a84ab04" />
+<img width="551" height="352" alt="image" src="https://github.com/user-attachments/assets/ffd6ec76-0cd8-4328-babf-8692867f1651" />
+
 LiDAR Data: https://portal.opentopography.org/dataspace/dataset?opentopoID=OTDS.032025.32610.1
 
 
