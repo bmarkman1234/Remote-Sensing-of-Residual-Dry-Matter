@@ -42,7 +42,7 @@ library(caret)
 library(broom)
 library(readr)
 
-df <- read_excel("C:/Users/bmark/pycharmProjects/MS_Thesis/data/Dangermond Field Data.xlsx") %>% 
+df <- read_excel("C:/Users/yourdirectory") %>% 
   mutate(study_area = tolower(study_area))
 
 spectral <- c("cai", "lcai", "ndli")
@@ -243,6 +243,7 @@ grid.arrange(
 
 cat("\nModel Performance Summary (LOOCV):\n")
 print(results %>% select(Model, R2, MAE, SD_Error, p_value, Predictors, Sample_Size))
+
 
 
 
