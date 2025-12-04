@@ -23,8 +23,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
 
-spectra_dir = r'C:\Users\bmark\PycharmProjects\Dangermond\data\Dangermond_Spectra'  
-excel_file_path = r'/data/Dangermond Field Data.xlsx'  
+spectra_dir = r'your/directory'  
+excel_file_path = r'your/directory'  
 
 
 field_data = pd.read_excel(excel_file_path)
@@ -85,6 +85,7 @@ plt.yticks(fontsize=18)
 plt.legend(loc='upper left', fontsize=30, title_fontsize=40)
 plt.tight_layout()
 plt.show()
+
 
 
 
